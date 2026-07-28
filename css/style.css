@@ -1,0 +1,92 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.ripple {
+    position: fixed;
+    pointer-events: none;
+    border: 3px solid #ffffff;
+    border-radius: 50%;
+    background: rgba(200, 255, 255, 0.3);
+    animation: rippleAnim 0.8s ease-out forwards;
+}
+@keyframes rippleAnim {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.8;
+        transform: translate(-50%, -50%) scale(0);
+    }
+    100% {
+        width: 200px;
+        height: 200px;
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
+body {
+    height: 100vh;
+    background: linear-gradient(#000000, #002222);
+    color: white;
+    font-family: Arial;
+}
+::selection {
+    background: #005533
+}
+.code-wrapper {
+    background: #0d1117;
+    border-radius: 12px;
+    border: 1px solid #30363d;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
+                0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+    margin: 20px 0;
+    margin-top: 20px;
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+.code-wrapper:hover {
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.7);
+}
+.code-header {
+    background: #161b22;
+    padding: 8px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #30363d;
+    color: #8b949e;
+    font-size: 13px;
+    font-family: Arial, sans-serif;
+}
+pre {
+    margin: 0;
+    padding: 20px;
+    overflow-x: auto;
+}
+code {
+    font-family: 'Fira Code', 'Consolas', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #c9d1d9;
+}
+.copy-btn {
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    padding: 4px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
+.copy-btn:hover {
+    background: #30363d;
+    color: #ffffff;
+    border-color: #8b949e;
+}
+.container {
+    margin: 0 auto;
+    max-width: 70%;
+    padding: 20px;
+}
