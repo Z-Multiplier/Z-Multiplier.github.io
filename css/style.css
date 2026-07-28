@@ -6,9 +6,8 @@
 .ripple {
     position: fixed;
     pointer-events: none;
-    border: 3px solid #ffffff;
+    border: 3px solid #eeffff;
     border-radius: 50%;
-    background: rgba(200, 255, 255, 0.3);
     animation: rippleAnim 0.8s ease-out forwards;
 }
 @keyframes rippleAnim {
@@ -32,7 +31,7 @@ body {
     font-family: Arial;
 }
 ::selection {
-    background: #005533
+    background: #005533;
 }
 .code-wrapper {
     background: #0d1117;
@@ -89,4 +88,40 @@ code {
     margin: 0 auto;
     max-width: 70%;
     padding: 20px;
+}
+.text-container {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+.inline-code {
+    background: #161b22;
+    border-radius: 5px;
+    border: 1px solid #30363d;
+    padding: 5px;
+    font-family: 'Fira Code', 'Consolas', monospace;
+}
+a {
+    color: rgba(255, 255, 255);
+    text-underline-offset: 2px;
+}
+a:hover {
+    color: rgba(200, 200, 200);
+}
+.ptr {
+    background-image: url('../assets/ptr.png');
+    background-blend-mode: overlay;
+    background-size: cover;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+}
+@keyframes spinOnce {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+.ptr-spin {
+    animation: spinOnce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }

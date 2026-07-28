@@ -1,3 +1,7 @@
+const PI=3.14159265359;
+let wanderTimeout=null;
+let currentAngle=0;
+let isSpinning=false;
 document.addEventListener('mousedown',function(e){
     const ripple=document.createElement('div');
     ripple.className='ripple';
@@ -22,8 +26,77 @@ function copyCode(btn){
         setTimeout(()=>{
             btn.textContent=originalText;
             btn.style.borderColor='#30363d';
-        }, 1500);
+        },1500);
     }).catch(()=>{
         alert('复制失败，请手动复制');
     });
 }
+document.addEventListener('DOMContentLoaded',function(){
+    const ptr=document.getElementsByClassName('ptr')[0];
+    if(!ptr) return;
+    let x=window.innerWidth-140;
+    let y=window.innerHeight-180;
+    let targetX=x,targetY=y;
+    function clampPosition(){
+        const maxX=window.innerWidth-120;
+        const maxY=window.innerHeight-150;
+        targetX=Math.min(maxX,Math.max(20,targetX));
+        targetY=Math.min(maxY,Math.max(20,targetY));
+    }
+    function updateTarget(){
+        const maxX=window.innerWidth-120;
+        const maxY=window.innerHeight-150;
+        targetX=Math.random()*maxX;
+        targetY=Math.random()*maxY;
+        setTimeout(updateTarget,10000+Math.random()*3000);
+    }
+    function moveptr(){
+        const dx=targetX-x;
+        const dy=targetY-y;
+        x+=dx*0.002;
+        y+=dy*0.002;
+        ptr.style.left=x+'px';
+        ptr.style.top=y+'px';
+        if(!isSpinning){
+            if(Math.abs(dx)>0.5||Math.abs(dy)>0.5){
+                let targetAngle=Math.atan2(dy,dx)+PI/2;
+                let diff=targetAngle-currentAngle;
+                while(diff>Math.PI) diff-=2*Math.PI;
+                while(diff< -Math.PI) diff+=2*Math.PI;
+                currentAngle+=diff*0.08;
+            }
+            ptr.style.transform=`rotate(${currentAngle}rad)`;
+        }
+        requestAnimationFrame(moveptr);
+    }
+    wanderTimeout=setTimeout(updateTarget,1000);
+    moveptr();
+    window.addEventListener('resize',clampPosition);
+});
+document.addEventListener('DOMContentLoaded',function(){
+    const ptr=document.getElementsByClassName('ptr')[0];
+    if(!ptr) return;
+    ptr.addEventListener('click',function(){
+        if(isSpinning) return;
+        isSpinning=true;
+        const startAngle=currentAngle;
+        const totalRotation=2*Math.PI;
+        const duration=600;
+        const startTime=performance.now();
+        function spinAnimation(time){
+            const elapsed=time-startTime;
+            const progress=Math.min(elapsed/duration,1);
+            const eased=1-Math.pow(1-progress,3);
+            const currentSpinAngle=startAngle+totalRotation*eased;
+            ptr.style.transform=`rotate(${currentSpinAngle}rad)`;
+            if(progress< 1){
+                requestAnimationFrame(spinAnimation);
+            }
+            else{
+                currentAngle=startAngle;
+                isSpinning=false;
+            }
+        }
+        requestAnimationFrame(spinAnimation);
+    });
+});
