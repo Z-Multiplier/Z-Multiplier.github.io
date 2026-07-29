@@ -23,6 +23,7 @@
             <div class="code-header">
                 <span>cpp</span>
                 <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <button class="copy-btn" onclick="downloadCode(this, '${ext}')">Download</button>
             </div>
             <pre><code class="language-cpp">#include &lt;cstdio&gt;
 int main(){
@@ -80,33 +81,30 @@ int main(){
             breaks:true
         });
         marked.use({
-            renderer: {
-                code(token) {
-                    const lang = token.lang || 'text';
-                    const escapedCode = escapeHtml(token.text);
-                    
-                    // 根据语言决定文件后缀（下载时用）
-                    const extMap = {
-                        'cpp': 'cpp',
-                        'c': 'c',
-                        'javascript': 'js',
-                        'js': 'js',
-                        'python': 'py',
-                        'py': 'py',
-                        'html': 'html',
-                        'css': 'css',
-                        'json': 'json',
-                        'bash': 'sh',
-                        'sh': 'sh',
-                        'text': 'txt'
+            renderer:{
+                code(token){
+                    const lang=token.lang||'text';
+                    const escapedCode=escapeHtml(token.text);
+                    const extMap={
+                        'cpp':'cpp',
+                        'c':'c',
+                        'javascript':'js',
+                        'js':'js',
+                        'python':'py',
+                        'py':'py',
+                        'html':'html',
+                        'css':'css',
+                        'json':'json',
+                        'bash':'sh',
+                        'sh':'sh',
+                        'text':'txt'
                     };
-                    const ext = extMap[lang] || 'txt';
-                    
+                    const ext=extMap[lang]||'txt';
                     return `
                         <div class="code-wrapper">
                             <div class="code-header">
                                 <span>${lang}</span>
-                                <div style="display: flex; gap: 8px;">
+                                <div style="display:flex; gap:8px;">
                                     <button class="copy-btn" onclick="copyCode(this)">Copy</button>
                                     <button class="copy-btn" onclick="downloadCode(this, '${ext}')">Download</button>
                                 </div>
