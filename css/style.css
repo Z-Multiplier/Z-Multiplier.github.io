@@ -233,3 +233,60 @@ a:hover {
     background: #21262d;
     border-color: #30363d;
 }
+
+.random-btn{
+    background-color: #002222;
+    color: #ffffff;
+    border-radius: 3px;
+    margin: 10px;
+}
+
+.random-btn:hover{
+    background-color: #000000;
+    left: auto;
+    top: auto;
+}
+
+.explode{
+    position: absolute;
+    background-color: #ffffff;
+    width: 75px;
+    height: 75px;
+    transform: rotate(30deg);
+}
+.explode-smoke{
+    position: absolute;
+    background-color: #444444;
+    width: 75px;
+    height: 75px;
+    animation: smoke-anim 10s ease-in-out forwards;
+}
+@keyframes smoke-anim{
+    0% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 0.1;
+    }
+}
+.explode-wave {
+    position: absolute;
+    pointer-events: none;
+    border: 7px solid #ff7300;
+    border-radius: 50%;
+    animation: explode-wave-Anim 1s forwards;
+}
+@keyframes explode-wave-Anim {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.7;
+        transform: translate(-50%, -50%) scale(0);
+    }
+    100% {
+        width: 3000px;
+        height: 3000px;
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}

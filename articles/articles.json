@@ -6,5 +6,9 @@
     {
         "id":"aboutDrawingSierpinskiTriangle",
         "title":"一种基于位运算绘制谢尔宾斯基箭头曲线的方法"
+    },
+    {
+        "id":"doublingLCA",
+        "title":"关于倍增求LCA"
     }
 ]
