@@ -175,9 +175,10 @@ a:hover {
 
 .markdown-body code:not(.hljs) {
     background: #161b22;
-    color: #f0f6fc;
-    padding: 0.2em 0.4em;
-    border-radius: 6px;
+    border-radius: 5px;
+    border: 1px solid #30363d;
+    padding: 5px;
+    font-family: 'Fira Code', 'Consolas', monospace;
 }
 
 .markdown-body hr {
@@ -198,4 +199,37 @@ a:hover {
 .markdown-body pre {
     background: transparent;
     padding: 0;
+}
+
+.searcher {
+    background: linear-gradient(90deg,#002222,#000000);
+    border: 2px solid #aaaaaa;
+    border-radius: 2px;
+    width: 70%;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    outline: none;
+    color: #ffffff;
+}
+.searcher:hover {
+    border: 2px solid #ffffff;
+}
+
+.search-list {
+    margin: 10px;
+}
+
+.search-item {
+    display: block;
+    padding: 10px 14px;
+    background: #161b22;
+    border-radius: 6px;
+    color: #c9d1d9;
+    text-decoration: none;
+    transition: background 0.2s;
+    border: 1px solid transparent;
+}
+
+.search-item:hover {
+    background: #21262d;
+    border-color: #30363d;
 }

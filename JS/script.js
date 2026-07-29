@@ -18,7 +18,7 @@ function copyCode(btn){
     const pre=wrapper.querySelector('pre');
     if(!pre) return;
     const code=pre.querySelector('code');
-    const text=code ? code.textContent : pre.textContent;
+    const text=code ? code.textContent :pre.textContent;
     navigator.clipboard.writeText(text.trim()).then(()=>{
         const originalText=btn.textContent;
         btn.textContent='Copied!';
@@ -100,3 +100,65 @@ document.addEventListener('DOMContentLoaded',function(){
         requestAnimationFrame(spinAnimation);
     });
 });
+document.addEventListener('DOMContentLoaded',function(){
+    const searchInput=document.getElementById('searchInput');
+    const searchResults=document.getElementById('searchResults');
+    if(!searchInput||!searchResults) return;
+    let articles=[];
+    let defaultArticles=[];
+    fetch('./articles/articles.json')
+        .then(res=>res.json())
+        .then(data=>{
+            articles=data;
+            defaultArticles=articles.slice(0,5);
+            renderResults(defaultArticles);
+        })
+        .catch(()=>{
+            searchResults.innerHTML='<p style="color:#8b949e; font-size:14px;">⚠️ 文章索引加载失败</p>';
+        });
+    function renderResults(list){
+        if(!list||list.length===0){
+            searchResults.innerHTML='<p style="color:#8b949e; font-size:14px;">没有找到匹配的文章</p>';
+            return;
+        }
+        searchResults.innerHTML=list.map(article=>`
+            <a href="?post=${article.id}" class="search-item">
+                ${article.title}
+            </a>
+        `).join('');
+    }
+    searchInput.addEventListener('input',function(){
+        const query=this.value.trim().toLowerCase();
+        if(!query){
+            renderResults(defaultArticles);
+            return;
+        }
+        const matched=articles.filter(article=>
+            article.title.toLowerCase().includes(query)
+        );
+        renderResults(matched);
+    });
+});
+function downloadCode(btn,ext){
+    const wrapper=btn.closest('.code-wrapper');
+    if(!wrapper) return;
+    const pre=wrapper.querySelector('pre');
+    if(!pre) return;
+    const code=pre.querySelector('code');
+    if(!code) return;
+    const text=code.textContent;
+    const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;
+    a.download=`code.${ext}`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    const originalText=btn.textContent;
+    btn.textContent='Downloaded';
+    setTimeout(() => {
+        btn.textContent=originalText;
+    },1200);
+}

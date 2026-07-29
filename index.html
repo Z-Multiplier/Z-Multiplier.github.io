@@ -18,9 +18,7 @@
 
     <div id="home" class="container">
         <div class="text-container"><p>你好呀，这里是Z-Multiplier，一只只会点</p><div class="inline-code">C++</div><p>的屑指针</p></div>
-        <div class="text-container"><p>个人博客还在施工中，但既然你来了，送你个<div class="inline-code">Hello,world</div>吧</p></div>
-        <div class="text-container"><p>或者，我在这里放了只指针，和它玩玩也可以</p></div>
-
+        <div class="text-container"><p>这里是我的个人博客，<del>其实就是随手写的些随笔</del></p></div>
         <div class="code-wrapper">
             <div class="code-header">
                 <span>cpp</span>
@@ -32,11 +30,13 @@ int main(){
     return 0;
 }</code></pre>
         </div>
-        <div class="text-container"><p>这里有一篇文章</p></div>
-        <div class="text-container"><a href="?post=cppandSTL"> · 竞赛C++STL与现代特性指北</a></div>
         <div class="text-container"></div>
+        <div class="text-container"><input type="text" id="searchInput" class="searcher" placeholder="搜索文章标题……"></input></div>
+        <div class="search-list" id="searchResults"></div>
+        
         <div class="text-container"><p>代码块由</p><div class="inline-code">highlight.js</div><p>渲染</p></div>
         <div class="text-container"><p>文章由</p><div class="inline-code">marked</div><p>渲染</p></div>
+        <div class="text-container"><p>网站由</p><div class="inline-code">github</div><p>部署</p></div>
         <div class="text-container"><p>相关链接：</p>
             <a href="https://space.bilibili.com/1872984530">Bilibili空间</a>
             <p>和</p>
@@ -69,20 +69,6 @@ int main(){
                 .replace(/{/g,"&#123")
                 .replace(/}/g,"&#125");
         }
-        marked.use({
-            renderer:{
-                code(token){
-                    const lang=token.lang||'text';
-                    const escapedCode=escapeHtml(token.text);
-                    return `
-                        <div class="code-wrapper">
-                            <div class="code-header"><span>${lang}</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
-                            <pre><code class="language-${lang}">${escapedCode}</code></pre>
-                        </div>
-                    `;
-                }
-            }
-        });
         marked.use(markedKatex({
             throwOnError:false,
             inlineTolerantNoSpace:true,
@@ -92,6 +78,44 @@ int main(){
             gfm:true,
             pedantic:false,
             breaks:true
+        });
+        marked.use({
+            renderer: {
+                code(token) {
+                    const lang = token.lang || 'text';
+                    const escapedCode = escapeHtml(token.text);
+                    
+                    // 根据语言决定文件后缀（下载时用）
+                    const extMap = {
+                        'cpp': 'cpp',
+                        'c': 'c',
+                        'javascript': 'js',
+                        'js': 'js',
+                        'python': 'py',
+                        'py': 'py',
+                        'html': 'html',
+                        'css': 'css',
+                        'json': 'json',
+                        'bash': 'sh',
+                        'sh': 'sh',
+                        'text': 'txt'
+                    };
+                    const ext = extMap[lang] || 'txt';
+                    
+                    return `
+                        <div class="code-wrapper">
+                            <div class="code-header">
+                                <span>${lang}</span>
+                                <div style="display: flex; gap: 8px;">
+                                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                                    <button class="copy-btn" onclick="downloadCode(this, '${ext}')">Download</button>
+                                </div>
+                            </div>
+                            <pre><code class="language-${lang}">${escapedCode}</code></pre>
+                        </div>
+                    `;
+                }
+            }
         });
     </script>
     <script>
