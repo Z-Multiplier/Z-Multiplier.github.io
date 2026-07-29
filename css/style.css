@@ -79,7 +79,22 @@ code {
     font-size: 12px;
     transition: all 0.2s;
 }
+.scroll-btn {
+    background: #21262d;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    padding: 4px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+}
 .copy-btn:hover {
+    background: #30363d;
+    color: #ffffff;
+    border-color: #8b949e;
+}
+.scroll-btn:hover {
     background: #30363d;
     color: #ffffff;
     border-color: #8b949e;
@@ -289,4 +304,22 @@ a:hover {
         opacity: 1;
         transform: translate(-50%, -50%) scale(1);
     }
+}
+
+.article-id{
+    font-style: italic;
+    color: #444444;
+}
+
+.article-id-display {
+    display: inline-block;
+    padding: 2px 12px;
+    margin-left: 12px;
+    background: #161b22;
+    border: 1px solid #30363d;
+    border-radius: 12px;
+    font-size: 14px;
+    color: #8b949e;
+    font-family: 'Fira Code', monospace;
+    vertical-align: middle;
 }

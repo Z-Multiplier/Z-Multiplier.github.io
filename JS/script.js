@@ -2,6 +2,9 @@ const PI=3.14159265359;
 let wanderTimeout=null;
 let currentAngle=0;
 let isSpinning=false;
+let articleScrollDelta=0;
+const clamp=(val,min,max)=>Math.min(max,Math.max(min,val));
+const showlistLen=5;
 document.addEventListener('mousedown',function(e){
     const ripple=document.createElement('div');
     ripple.className='ripple';
@@ -104,42 +107,45 @@ document.addEventListener('DOMContentLoaded',function(){
         });
     }
 });
+let searchInput;
+let searchResults;
+let fullArticles=[];
+let articles=[];
+function renderResults(list){
+    if(!list||list.length===0){
+        searchResults.innerHTML='<p style="color:#8b949e; font-size:14px;">没有找到匹配的文章</p>';
+        return;
+    }
+    searchResults.innerHTML=list.map(article=>`
+        <a href="?post=${article.id}" class="search-item">
+            ${article.title}
+            <span class="article-id">id:${article.num}</span>
+        </a>
+    `).join('');
+}
 document.addEventListener('DOMContentLoaded',function(){
-    const searchInput=document.getElementById('searchInput');
-    const searchResults=document.getElementById('searchResults');
+    searchInput=document.getElementById('searchInput');
+    searchResults=document.getElementById('searchResults');
     if(!searchInput||!searchResults) return;
-    let articles=[];
-    let defaultArticles=[];
     fetch('./articles/articles.json')
         .then(res=>res.json())
         .then(data=>{
-            articles=data;
-            defaultArticles=articles.slice(0,5);
-            renderResults(defaultArticles);
+            fullArticles=data;
+            articles=fullArticles.slice(clamp(0+articleScrollDelta,0,fullArticles.length),clamp(showlistLen+articleScrollDelta,0,fullArticles.length));
+            renderResults(articles);
         })
         .catch(()=>{
             searchResults.innerHTML='<p style="color:#8b949e; font-size:14px;">⚠️ 文章索引加载失败</p>';
         });
-    function renderResults(list){
-        if(!list||list.length===0){
-            searchResults.innerHTML='<p style="color:#8b949e; font-size:14px;">没有找到匹配的文章</p>';
-            return;
-        }
-        searchResults.innerHTML=list.map(article=>`
-            <a href="?post=${article.id}" class="search-item">
-                ${article.title}
-            </a>
-        `).join('');
-    }
     searchInput.addEventListener('input',function(){
         const query=this.value.trim().toLowerCase();
         if(!query){
-            renderResults(defaultArticles);
+            renderResults(articles);
             return;
         }
-        const matched=articles.filter(article=>
+        const matched=fullArticles.filter(article=>
             article.title.toLowerCase().includes(query)
-        );
+        ).slice(clamp(0+articleScrollDelta,0,fullArticles.length),clamp(showlistLen+articleScrollDelta,0,fullArticles.length));
         renderResults(matched);
     });
 });
@@ -249,7 +255,7 @@ function createActivatedPtr(){
     return ptr;
 }
 function randomThing(btn){
-    random=getRandomInt(0,7);
+    random=getRandomInt(0,8);
     const rect=btn.getBoundingClientRect();
     switch(random){
         case 0:{
@@ -298,6 +304,7 @@ function randomThing(btn){
         }
         case 3:{
             alert('光敏性癫痫警告，若有不适请立刻退出');
+            alert('这是认真的，触发就无法关闭，不适请立刻刷新');
             RainbowStep();
             break;
         }
@@ -308,7 +315,7 @@ function randomThing(btn){
             break;
         }
         case 5:{
-            for(let i=100;i>=0;i--){
+            for(let i=20;i>0;i--){
                 alert(`还剩${i}次关闭，加油`);
             }
             break;
@@ -322,7 +329,7 @@ function randomThing(btn){
                 const ty=(Math.random()-0.5)*200;
                 const rot=(Math.random()-0.5)*360;
                 const scale=0.5+Math.random()*1.5;
-                el.style.transform=`translate(${tx}px, ${ty}px) rotate(${rot}deg) scale(${scale})`;
+                el.style.transform=`translate(${tx}px,${ty}px) rotate(${rot}deg) scale(${scale})`;
             });
             break;
         }
@@ -331,5 +338,40 @@ function randomThing(btn){
             document.body.innerHTML='<div style=\"display:flex; width:100%; height:100%; justify-content:center;\"><h1 style=\"text-align:center; color:#000000\">404 Not Found :P</h1></div>'
             break;
         }
+        case 8:{
+            document.body.style.transform='rotate(180deg)';
+            break;
+        }
     }
+}
+function applyArticleScrollDelta(val){
+    articleScrollDelta+=val;
+    articleScrollDelta=clamp(articleScrollDelta,0,fullArticles.length-showlistLen);
+    const start=clamp(articleScrollDelta,0,Math.max(0,fullArticles.length-showlistLen));
+    const end=Math.min(start+showlistLen,fullArticles.length);
+    articles=fullArticles.slice(start,end);
+    renderResults(articles);
+}
+function jumpToArticle(){
+    const input=document.getElementById('jumpInput');
+    if(!input) return;
+    const raw=input.value.trim();
+    if(!raw) return;
+    const targetId=parseInt(raw,10);
+    if(isNaN(targetId)||targetId<1){
+        alert('请输入有效的文章 ID（数字）');
+        return;
+    }
+    const index=fullArticles.findIndex(article=>article.id===targetId||article.num===targetId);
+    if(index===-1){
+        alert(`找不到 ID 为 ${targetId} 的文章`);
+        return;
+    }
+    const pageIndex=Math.floor(index/showlistLen);
+    articleScrollDelta=pageIndex*showlistLen;
+    const start=clamp(articleScrollDelta,0,Math.max(0,fullArticles.length-showlistLen));
+    const end=Math.min(start+showlistLen,fullArticles.length);
+    articles=fullArticles.slice(start,end);
+    renderResults(articles);
+    input.value='';
 }

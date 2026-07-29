@@ -19,6 +19,7 @@
     <div id="home" class="container">
         <div class="text-container"><p>你好呀，这里是Z-Multiplier，一只只会点</p><div class="inline-code">C++</div><p>的屑指针</p></div>
         <div class="text-container"><p>这里是我的个人博客，<del>其实就是随手写的些随笔</del></p></div>
+        <div class="text-container"><p>如果内容上有问题欢迎来B站喷我，<del>我错了轻点喷轻点喷</del></p></div>
         <div class="code-wrapper">
             <div class="code-header">
                 <span>cpp</span>
@@ -36,6 +37,16 @@ int main(){
         <div class="text-container"></div>
         <div class="text-container"><input type="text" id="searchInput" class="searcher" placeholder="搜索文章标题……"></input></div>
         <div class="search-list" id="searchResults"></div>
+        <div class="text-container">
+            <button class="scroll-btn" onclick="applyArticleScrollDelta(-1)">🔼</button>
+            <button class="scroll-btn" onclick="applyArticleScrollDelta(-4)">⏫</button>
+            <input placeholder="jump to..." class="searcher" id="jumpInput"></input>
+        </div>
+        <div class="text-container">
+            <button class="scroll-btn" onclick="applyArticleScrollDelta(1)">🔽</button>
+            <button class="scroll-btn" onclick="applyArticleScrollDelta(4)">⏬</button>
+            <button class="scroll-btn" onclick="jumpToArticle()">confirm</button>
+        </div>
         
         <button class="random-btn" onclick="randomThing(this)">百宝箱</button>
 
@@ -126,6 +137,27 @@ int main(){
         if(postName){
             document.getElementById('home').style.display='none';
             document.getElementById('post-area').style.display='block';
+            fetch(`articles/articles.json`)
+                .then(res=>res.json())
+                .then(data=>{
+                    const article=data.find(a=>a.id===postName);
+                    const articleNum=article?article.num:'?';
+                    const postArea=document.getElementById('post-area');
+                    const oldId=document.getElementById('article-id-display');
+                    if(oldId) oldId.remove();
+                    const idDisplay=document.createElement('div');
+                    idDisplay.id='article-id-display';
+                    idDisplay.className='article-id-display';
+                    idDisplay.textContent=`内容id:#${articleNum}`;
+                    const backLink=postArea.querySelector('a');
+                    if(backLink){
+                        backLink.after(idDisplay);
+                    }
+                    else{
+                        postArea.prepend(idDisplay);
+                    }
+                    return fetch(`articles/${postName}.md`);
+                })
             fetch(`articles/${postName}.md`)
                 .then(res=>{
                     if(!res.ok) throw new Error('文章不存在');

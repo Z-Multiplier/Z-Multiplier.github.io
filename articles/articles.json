@@ -1,14 +1,32 @@
 [
     {
         "id":"cppandSTL",
-        "title":"竞赛C++STL与现代特性指北"
+        "title":"竞赛C++STL与现代特性指北",
+        "num":1
     },
     {
         "id":"aboutDrawingSierpinskiTriangle",
-        "title":"一种基于位运算绘制谢尔宾斯基箭头曲线的方法"
+        "title":"一种基于位运算绘制谢尔宾斯基箭头曲线的方法",
+        "num":2
     },
     {
         "id":"doublingLCA",
-        "title":"关于倍增求LCA"
+        "title":"关于倍增求LCA",
+        "num":3
+    },
+    {
+        "id":"timecomplexCalc",
+        "title":"时间复杂度计算器",
+        "num":4
+    },
+    {
+        "id":"aboutMakingAgents",
+        "title":"关于手搓简易agent",
+        "num":5
+    },
+    {
+        "id":"about2026JunGESP8",
+        "title":"关于2026年6月C++GESP考后感想",
+        "num":6
     }
 ]
