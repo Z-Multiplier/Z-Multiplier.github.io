@@ -2,7 +2,7 @@
 <html lang="zh-CN">
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>shared_ptr&lt;Z&gt;</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -10,6 +10,13 @@
 </head>
 <body>
     <div class="container">
+        <div id="post-area" class="markdown-body">
+            <a href="./">← 返回首页</a>
+            <div id="post-content"></div>
+        </div>
+    </div>
+
+    <div id="home" class="container">
         <div class="text-container"><p>你好呀，这里是Z-Multiplier，一只只会点</p><div class="inline-code">C++</div><p>的屑指针</p></div>
         <div class="text-container"><p>个人博客还在施工中，但既然你来了，送你个<div class="inline-code">Hello,world</div>吧</p></div>
         <div class="text-container"><p>或者，我在这里放了只指针，和它玩玩也可以</p></div>
@@ -25,8 +32,11 @@ int main(){
     return 0;
 }</code></pre>
         </div>
-
+        <div class="text-container"><p>这里有一篇文章</p></div>
+        <div class="text-container"><a href="?post=cppandSTL"> · 竞赛C++STL与现代特性指北</a></div>
+        <div class="text-container"></div>
         <div class="text-container"><p>代码块由</p><div class="inline-code">highlight.js</div><p>渲染</p></div>
+        <div class="text-container"><p>文章由</p><div class="inline-code">marked</div><p>渲染</p></div>
         <div class="text-container"><p>相关链接：</p>
             <a href="https://space.bilibili.com/1872984530">Bilibili空间</a>
             <p>和</p>
@@ -39,5 +49,107 @@ int main(){
     <script>
         hljs.highlightAll();
     </script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@sigodenjs/marked-katex-extension@1.0.0/lib/index.umd.js"></script>
     <script src="JS/script.js"></script>
+    <script>
+        function escapeHtml(unsafe){
+            if(typeof unsafe!=='string'){
+                unsafe=String(unsafe||'');
+            }
+            return unsafe
+                .replace(/&/g,"&amp;")
+                .replace(/</g,"&lt;")
+                .replace(/>/g,"&gt;")
+                .replace(/"/g,"&quot;")
+                .replace(/'/g,"&#039;");
+        }
+        marked.use({
+            renderer:{
+                code(token){
+                    const lang=token.lang||'text';
+                    const escapedCode=escapeHtml(token.text);
+                    return `
+                        <div class="code-wrapper">
+                            <div class="code-header"><span>${lang}</span><button class="copy-btn" onclick="copyCode(this)">Copy</button></div>
+                            <pre><code class="language-${lang}">${escapedCode}</code></pre>
+                        </div>
+                    `;
+                }
+            }
+        });
+        marked.use(markedKatex({
+            throwOnError:false,
+            inlineTolerantNoSpace:true,
+            nonStandard:true
+        }));
+        marked.setOptions({
+            gfm:true,
+            pedantic:false,
+            breaks:true
+        });
+    </script>
+    <script>
+        const params=new URLSearchParams(window.location.search);
+        const postName=params.get('post');
+        if(postName){
+            document.getElementById('home').style.display='none';
+            document.getElementById('post-area').style.display='block';
+            fetch(`articles/${postName}.md`)
+                .then(res=>{
+                    if(!res.ok) throw new Error('文章不存在');
+                    return res.text();
+                })
+                .then(md=>{
+                    document.getElementById('post-content').innerHTML=marked.parse(md,{
+                        headerIds:true,
+                        headerPrefix:'user-content-'
+                    });
+                    if(typeof hljs!=='undefined'){
+                        document.querySelectorAll('#post-content pre code').forEach(block=>{
+                            hljs.highlightElement(block);
+                        });
+                    }
+                    const hash=window.location.hash;
+                    if(hash){
+                        scrollToArticleHash();
+                    }
+                })
+                .catch(err=>{
+                    document.getElementById('post-content').innerHTML='<p style="color:#f87171;">⚠️ 文章加载失败，请检查文件名是否正确。</p>';
+                    console.error(err);
+                });
+        }
+        else{
+            document.getElementById('post-area').style.display='none';
+        }
+        function scrollToArticleHash(){
+            const hash=window.location.hash;
+            if(!hash) return;
+            const postArea=document.getElementById('post-area');
+            if(!postArea||postArea.style.display==='none') return;
+            requestAnimationFrame(()=>{
+                let target=document.getElementById(hash.slice(1));
+                if(!target){
+                    const cleanId=hash.slice(1).replace(/[^a-zA-Z0-9\-_]/g,'');
+                    target=document.getElementById(cleanId);
+                }
+                if(!target){
+                    const prefixedId='user-content-'+hash.slice(1).replace(/[^a-zA-Z0-9\-_]/g,'');
+                    target=document.getElementById(prefixedId);
+                }
+                if(target){
+                    target.scrollIntoView({behavior:'smooth',block:'start'});
+                }
+                else{
+                    console.warn('找不到锚点:',hash.slice(1));
+                }
+            });
+        }
+        window.addEventListener('hashchange',scrollToArticleHash);
+    </script>
+    <link rel="stylesheet" href="css/style.css">
 </body>
