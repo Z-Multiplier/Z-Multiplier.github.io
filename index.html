@@ -22,8 +22,10 @@
         <div class="code-wrapper">
             <div class="code-header">
                 <span>cpp</span>
-                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-                <button class="copy-btn" onclick="downloadCode(this, '${ext}')">Download</button>
+                <div style="display:flex; gap:8px;">
+                    <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                    <button class="copy-btn" onclick="downloadCode(this, '${ext}')">Download</button>
+                </div>
             </div>
             <pre><code class="language-cpp">#include &lt;cstdio&gt;
 int main(){
