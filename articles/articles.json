@@ -28,5 +28,15 @@
         "id":"about2026JunGESP8",
         "title":"关于2026年6月C++GESP考后感想",
         "num":6
+    },
+    {
+        "id":"aboutFenwickTree",
+        "title":"关于树状数组",
+        "num":7
+    },
+    {
+        "id":"multipleCompleteBackpackProblem",
+        "title":"多维完全背包例题一则",
+        "num":8
     }
 ]

@@ -9,6 +9,10 @@
     <link rel="icon" href="assets/favicon.png" type="image/png">
 </head>
 <body>
+    <div class="hero">
+        <strong>shared_ptr&lt;Z&gt;</strong>
+    </div>
+
     <div class="container">
         <div id="post-area" class="markdown-body">
             <a href="./">← 返回首页</a>
@@ -20,6 +24,8 @@
         <div class="text-container"><p>你好呀，这里是Z-Multiplier，一只只会点</p><div class="inline-code">C++</div><p>的屑指针</p></div>
         <div class="text-container"><p>这里是我的个人博客，<del>其实就是随手写的些随笔</del></p></div>
         <div class="text-container"><p>如果内容上有问题欢迎来B站喷我，<del>我错了轻点喷轻点喷</del></p></div>
+        <div class="text-container"><p>由于托管在</p><div class="inline-code">Github</div><p>上，加载可能略慢，我也无能为力，不要骂我TAT</p></div>
+        <div class="text-container"><p><del>什么叫“关于我”界面？那是啥？</del></p></div>
         <div class="code-wrapper">
             <div class="code-header">
                 <span>cpp</span>
@@ -49,18 +55,27 @@ int main(){
         </div>
         
         <button class="random-btn" onclick="randomThing(this)">百宝箱</button>
-
-        <div class="text-container"><p>代码块由</p><div class="inline-code">highlight.js</div><p>渲染</p></div>
-        <div class="text-container"><p>文章由</p><div class="inline-code">marked</div><p>渲染</p></div>
-        <div class="text-container"><p>网站由</p><div class="inline-code">github</div><p>部署</p></div>
+    </div>
+    <div class="ptr"></div>
+    
+    <div class="foot">
+        <div>
+            <div class="text-container"><p>代码块由</p><div class="inline-code">highlight.js</div><p>渲染</p></div>
+            <div class="text-container"><p>文章由</p><div class="inline-code">marked</div><p>渲染</p></div>
+            <div class="text-container"><p>网站由</p><div class="inline-code">github</div><p>部署</p></div>
+        </div>
         <div class="text-container"><p>相关链接：</p>
             <a href="https://space.bilibili.com/1872984530">Bilibili空间</a>
             <p>和</p>
             <a href="https://github.com/Z-Multiplier">Github档案</a>
         </div>
+        <div>
+            <div class="text-container">
+                (c)Z-Multiplier 2026
+            </div>
+        </div>
     </div>
-    <div class="ptr"></div>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>
         hljs.highlightAll();
@@ -179,7 +194,7 @@ int main(){
                     }
                 })
                 .catch(err=>{
-                    document.getElementById('post-content').innerHTML='<p style="color:#f87171;">⚠️ 文章加载失败，请检查文件名是否正确。</p>';
+                    document.getElementById('post-content').innerHTML='<p style="color:#f87171;">⚠️ 文章加载失败，快去B站拷打作者</p>';
                     console.error(err);
                 });
         }

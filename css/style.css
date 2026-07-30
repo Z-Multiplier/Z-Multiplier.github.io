@@ -323,3 +323,30 @@ a:hover {
     font-family: 'Fira Code', monospace;
     vertical-align: middle;
 }
+
+.hero {
+    width: 100%;
+    position: fixed;
+    display: flex;
+    padding: 20px;
+    align-items: center;
+    height: 50px;
+    background: #00222267;
+    color: #ffffff;
+    border: 1px solid #005533;
+    margin-bottom: 30px;
+}
+
+.foot {
+    width: 100%;
+    position: absolute;
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    background: #00222267;
+    color: #ffffff;
+    margin-top: 40px;
+    border: 1px solid #005533;
+    gap: 200px;
+}
