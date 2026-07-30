@@ -255,7 +255,7 @@ function createActivatedPtr(){
     return ptr;
 }
 function randomThing(btn){
-    random=getRandomInt(0,8);
+    random=getRandomInt(0,9);
     const rect=btn.getBoundingClientRect();
     switch(random){
         case 0:{
@@ -341,6 +341,13 @@ function randomThing(btn){
         case 8:{
             document.body.style.transform='rotate(180deg)';
             break;
+        }
+        case 9:{
+            const foggy=document.createElement('div');
+            foggy.className='fog';
+            foggy.style.left=0+'px';
+            foggy.style.top=0+'px';
+            document.body.appendChild(foggy);
         }
     }
 }
