@@ -38,5 +38,15 @@
         "id":"multipleCompleteBackpackProblem",
         "title":"多维完全背包例题一则",
         "num":8
+    },
+    {
+        "id":"aboutDSUs",
+        "title":"关于并查集",
+        "num":9
+    },
+    {
+        "id":"prefixEverything",
+        "title":"前缀和化万物",
+        "num":10
     }
 ]
