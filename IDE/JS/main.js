@@ -48,7 +48,7 @@ async function runCpp(code, stdinContent = '') {
     const { module, compileOutput } = await compile({
         source: code,
         fileName: 'main.cpp',
-        flags: ['-std=c++17', '-fno-exceptions']
+        flags: ['-std=c++17', '-fno-exceptions', '-D_LIBCPP_NO_EXCEPTIONS']
     });
 
     if (!module) {
