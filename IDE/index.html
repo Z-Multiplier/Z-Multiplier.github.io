@@ -19,9 +19,12 @@
             <pre class="code-display"><code id="code-highlight" class="javascript"></code></pre>
             <textarea id="code-input" class="code-input" spellcheck="false" placeholder="Input"></textarea>
         </div>
-        <textarea id="stdin-input" placeholder="stdin 输入..." class="std-input"></textarea>
+        <div>
+            <textarea id="stdin-input" placeholder="stdin 输入..." class="std-input"></textarea>
+            <pre id="output" class="std-input"></pre>
+        </div>
         <button id="run-btn" class="random-btn">运行</button>
-        <pre id="output" class="std-input"></pre>
+        <button id="template-btn" class="random-btn" onclick="fillTemplate(this)">填充模板</button>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script>hljs.highlightAll()</script>

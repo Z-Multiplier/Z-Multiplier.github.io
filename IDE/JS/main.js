@@ -129,6 +129,14 @@ textarea.addEventListener('keydown', function(e) {
             insertText(this, '\n' + indent + '    ' + '\n' + indent, -1-indent.length);
             return;
         }
+        else if ((left === '(') ||
+            (left === '[') ||
+            (left === '{')) {
+            e.preventDefault();
+            const indent = getLineIndent(value, start);
+            insertText(this, '\n' + indent + '    ');
+            return;
+        }
         else{
             const indent = getLineIndent(value, start);
             insertText(this, '\n' + indent);
@@ -189,3 +197,11 @@ textarea.addEventListener('keydown', function(e) {
         }
     }
 });
+
+function fillTemplate(btn){
+    const codes=document.getElementById('code-input');
+    codes.value='#include <bits/stdc++.h>\nusing namespace std;\nint main(){\n    return 0;\n}'
+    codes.dispatchEvent(new Event('input'));
+}
+
+window.fillTemplate=fillTemplate;
