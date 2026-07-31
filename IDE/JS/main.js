@@ -11,6 +11,36 @@ textarea.addEventListener('scroll',function(){
     pre.scrollTop=this.scrollTop;
     pre.scrollLeft=this.scrollLeft;
 });
+async function preCacheWasm() {
+    const basePath = './node_modules/browsercc/dist/';
+    const files = ['clang.wasm', 'lld.wasm', 'sysroot.tar'];
+    
+    try {
+        const cache = await caches.open('browsercc-cache');
+        const cacheKeys = await cache.keys();
+        const alreadyCached = files.every(file => cacheKeys.some(req => req.url.endsWith(file)));
+        if (alreadyCached) {
+            console.log('WASM 文件已在缓存中，无需重复下载');
+            return;
+        }
+        await Promise.all(files.map(async (file) => {
+            const url = basePath + file;
+            const response = await fetch(url, { mode: 'cors' });
+            if (!response.ok) throw new Error(`Failed to fetch ${file}`);
+            await cache.put(url, response);
+        }));
+        console.log('WASM 文件预缓存完成');
+    } catch (e) {
+        console.warn('预缓存失败:', e);
+    }
+}
+
+if ('requestIdleCallback' in window) {
+    requestIdleCallback(preCacheWasm);
+} else {
+    setTimeout(preCacheWasm, 1000);
+}
+
 import { compile } from 'browsercc';
 import { WASI, File, OpenFile, ConsoleStdout } from '@bjorn3/browser_wasi_shim';
 
